@@ -2,12 +2,28 @@ package main
 
 import (
 	"github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/joho/godotenv"
 	"log"
+	"os"
 )
+
+func envInit() {
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+}
 
 func main() {
 
-	bot, err := tgbotapi.NewBotAPI("568578863:AAHQOl3Mj-IYi-ed0BXbQ-mvXa2JzjRNOTk")
+	envInit()
+
+	tgBotToken, exists := os.LookupEnv("TG_BOT_TOKEN")
+
+	if exists {
+		log.Printf("Tg bot token: %s", tgBotToken)
+	}
+
+	bot, err := tgbotapi.NewBotAPI(tgBotToken)
 
 	if err != nil {
 		log.Panic(err)
